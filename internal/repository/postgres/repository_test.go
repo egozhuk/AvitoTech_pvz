@@ -91,7 +91,6 @@ func TestAllRepositories(t *testing.T) {
 	receptionRepo := postgres.NewReceptionRepository(testDB)
 	productRepo := postgres.NewProductRepository(testDB)
 
-	// Create user
 	err := userRepo.CreateUser(ctx, &domain.User{
 		Email:    "test@mail.com",
 		Password: "hashed",
@@ -103,35 +102,28 @@ func TestAllRepositories(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, "test@mail.com", user.Email)
 
-	// Create PVZ
 	pvz, err := pvzRepo.CreatePVZ(ctx, "Москва")
 	require.NoError(t, err)
 
-	// Create Reception
 	reception, err := receptionRepo.CreateReception(ctx, pvz.ID)
 	require.NoError(t, err)
 	assert.Equal(t, "in_progress", reception.Status)
 
-	// Add product
 	product, err := productRepo.AddProduct(ctx, reception.ID, "book")
 	require.NoError(t, err)
 	assert.Equal(t, "book", product.Type)
 
-	// Get products
 	products, err := productRepo.GetProductsByReception(ctx, reception.ID)
 	require.NoError(t, err)
 	assert.Len(t, products, 1)
 
-	// Delete last product
 	err = productRepo.DeleteLastProduct(ctx, reception.ID)
 	require.NoError(t, err)
 
-	// Close reception
 	closed, err := receptionRepo.CloseLastReception(ctx, pvz.ID)
 	require.NoError(t, err)
 	assert.Equal(t, "close", closed.Status)
 
-	// List PVZ
 	pvzList, err := pvzRepo.ListPVZWithFilter(ctx, nil, nil, 1, 10)
 	require.NoError(t, err)
 	assert.NotEmpty(t, pvzList)

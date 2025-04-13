@@ -6,5 +6,5 @@ type User struct {
 	ID       uuid.UUID
 	Email    string
 	Password string
-	Role     string // employee / moderator
+	Role     string
 }
