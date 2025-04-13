@@ -28,7 +28,7 @@ go run ./cmd/
 ⸻
 
 Архитектура
-
+```
 cmd/
 └── pvz            # entrypoint
 
@@ -44,7 +44,7 @@ internal/
 
 migrations/
 └── *.sql          # goose миграции
-
+```
 ⸻
 
 Переменные окружения
